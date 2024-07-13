@@ -3,22 +3,27 @@ import dotenv from "dotenv";
 import cors from "cors";
 import cookieSession from "cookie-session";
 import passport from "passport";
-import passportSetup from "./passport.js"
+import authRoute from "./routes/auth.routes.js"
+import config from "./mongodb/config.js";
+import configPassport from "./passport.js";
+import session from "express-session";
+
+
 dotenv.config()
+
 
 const port = process.env.PORT || 8000;
 const app = express();
 
-app.use(cookieSession({
-    name: "session",
-    keys:["cyberwolve"],
 
-    //NOTE - cookies option
-    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+app.use(express.json())
+
+app.use(session({
+    secret:process.env.SESSION_SECRET,
+    resave:false,
+    saveUninitialized:true,
 }))
 
-app.use(passport.initialize());
-app.use(passport.session());
 
 app.use(
     cors({
@@ -28,10 +33,14 @@ app.use(
     })
 )
 
-app.get("/",(req,res)=>{
-    res.send("HEllo world")
-})
+
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use("/auth",authRoute)
 
 app.listen(port,()=>{
+    config()
     console.log(`Server is running on port ${port}`)
 })
