@@ -12,6 +12,7 @@ const configPassport = () => {
         scope: ["profile", "email"],
       },
       async (accessToken, refreshToken, profile, done) => {
+        // console.log("profile",profile) checking for day from profile
         try {
           let user = await userDb.findOne({ googleId: profile.id });
 

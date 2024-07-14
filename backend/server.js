@@ -1,7 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import cookieSession from "cookie-session";
 import passport from "passport";
 import authRoute from "./routes/auth.routes.js"
 import config from "./mongodb/config.js";
@@ -18,6 +17,8 @@ const app = express();
 
 app.use(express.json())
 
+configPassport()
+
 app.use(session({
     secret:process.env.SESSION_SECRET,
     resave:false,
@@ -32,8 +33,6 @@ app.use(
         credentials: true,
     })
 )
-
-
 
 app.use(passport.initialize());
 app.use(passport.session());

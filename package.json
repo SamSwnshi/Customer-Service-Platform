@@ -11,6 +11,7 @@
   "author": "Sameer Suryawanshi",
   "license": "ISC",
   "dependencies": {
+    "@intercom/messenger-js-sdk": "^0.0.11",
     "cookie-parser": "^1.4.6",
     "cookie-session": "^2.1.0",
     "cors": "^2.8.5",

@@ -1,43 +1,52 @@
 import passport from "passport";
 import express from "express";
 
-const router = express.Router()
+const router = express.Router();
 
-router.get("/login/failed",(req,res)=>{
-    res.status(401).json({
-        message: "Login Failure"
-    })
-})
+router.get("/google", passport.authenticate("google", ["profile", "email"]));
 
-router.get("/success",(req,res)=>{
-    if(req.user){
-        res.status(200).json({
-            message: "Successfull Loged In!",
-            user: req.user,
-        })
-    }else{
-        res.status(403).json({
-            message: "Not Authorized"
-        })
+
+// NOTE - old google call back from google
+router.get(
+  "/google/callback",
+  passport.authenticate("google", {
+    successRedirect: "http://localhost:3000/dashboard",
+    failureRedirect: "http://localhost:3000/login",
+  })
+);
+
+// router.get("/google/callback", passport.authenticate("google", {
+//   failureRedirect: "http://localhost:3000/login",
+// }), (req, res) => {
+//   const userData = {
+//     id: req.user.id,
+//     name: req.user.name,
+//     email: req.user.email,
+//     createdAt: req.user.createdAt,
+//   };
+//   res.redirect(`http://localhost:3000/dashboard?user=${encodeURIComponent(JSON.stringify(userData))}`);
+// });
+
+router.get("/login/sucess", async (req, res) => {
+
+  if (req.user) {
+    res.status(200).json({
+      message: "user has successfully authenticated",
+      user: req.user,
+    });
+  } else {
+    res.status(400).json({ message: "Not Authorized" });
+  }
+});
+
+
+router.get("/logout",async(req,res,next)=>{
+  req.logout(function(error){
+    if(error){
+      return next(error);
     }
-   
+
+    res.redirect("http://localhost:3000/login")
+  });
 })
-
-
-router.get("/google",passport.authenticate("google",["profile","email"]));
-
-router.get("/google/callback",
-    passport.authenticate("google",{
-        successRedirect: process.env.GOOGLE_CLIENT_URL ,
-        failureRedirect: "/login/failed",
-    })
-)
-
-
-router.get("/logout",(req,res)=>{
-    res.logout();
-    res.redirect(process.env.GOOGLE_CLIENT_URL);
-})
-
-
 export default router;
