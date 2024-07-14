@@ -1,38 +1,39 @@
 
-import login from "./styles.module.css";
 import { Link } from "react-router-dom";
+import  "./signup.css"
 const Signup = () => {
-  const googleAuth = () =>{
-    window.open(
-      `/api/auth/google/callback`,"self"
-    )
-  }
-  return (
-    <div className={login.container}>
-      <h1>Sign Up Form</h1>
-      <div>
-        <div>
-          <div>
-            <label>Username</label>
-            <input type="text" placeholder="Enter Your Username" />
-          </div>
-          <div>
-            <label>Email</label>
-            <input type="email" placeholder="Enter Your Email" />
-          </div>
-          <div>
-            <label>Password</label>
-            <input type="password" placeholder="Enter Your Password" />
-          </div>
-          <button onClick={googleAuth}>
-            <span>Sing Up with Google</span>
-          </button>
-          <p>
-             Already have Account? {" "}<Link to="/login">{"Login"}</Link>
-          </p>
+  const googleAuth = () => {
+    window.open("http://localhost:8000/auth/google/callback", "_self");
+  };
 
-          <button>SignUp</button>
+  return (
+    <div className="container">
+      <div className="box">
+        <h1 className="title">Sign Up</h1>
+        <div className="inputGroup">
+          <label className="label">Username</label>
+          <input type="text" placeholder="Enter Your Username" className="input" />
         </div>
+        <div className="inputGroup">
+          <label className="label">Email</label>
+          <input type="email" placeholder="Enter Your Email" className="input" />
+        </div>
+        <div className="inputGroup">
+          <label className="label">Password</label>
+          <input type="password" placeholder="Enter Your Password" className="input" />
+        </div>
+        <div className="inputGroup">
+          <label className="label">Confirm Password</label>
+          <input type="password" placeholder="Enter Your Password" className="input" />
+        </div>
+        <button className="googleButton" onClick={googleAuth}>
+          <span>Sign Up with Google</span>
+        </button>
+        <p className="loginPrompt">
+          Already have an account?{" "}
+          <Link to="/login" className="loginLink">Login</Link>
+        </p>
+        <button className="signupButton">Sign Up</button>
       </div>
     </div>
   );
